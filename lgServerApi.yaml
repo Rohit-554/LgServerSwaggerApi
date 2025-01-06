@@ -1,0 +1,519 @@
+openapi: 3.0.0
+info:
+  title: Liquid Galaxy Control API
+  description: REST API for controlling and managing Liquid Galaxy systems via SSH
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+components:
+  schemas:
+    AppSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Success message
+        statusCode:
+          type: integer
+          description: HTTP status code
+          example: 200
+        data:
+          type: string
+          description: Empty string
+          example: ""
+
+    AppError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: "An error occurred"
+        statusCode:
+          type: integer
+          description: HTTP status code
+          example: 400
+        stack:
+          type: string
+          description: Error stack trace
+          example: ""
+
+    BasicSSHConfig:
+      type: object
+      required:
+        - host
+        - sshPort
+        - username
+        - password
+      properties:
+        host:
+          type: string
+          description: SSH host address
+          example: "192.168.201.3"
+        sshPort:
+          type: string
+          description: SSH port number
+          example: "22"
+        username:
+          type: string
+          description: SSH username
+          example: "lg"
+        password:
+          type: string
+          description: SSH password
+          format: password
+          example: "lg"
+    
+    RigConfig:
+      allOf:
+        - $ref: '#/components/schemas/BasicSSHConfig'
+        - type: object
+          required:
+            - numberofrigs
+          properties:
+            numberofrigs:
+              type: string
+              description: Number of Liquid Galaxy rigs
+              example: "3"
+    
+    FlyToConfig:
+      allOf:
+        - $ref: '#/components/schemas/RigConfig'
+        - type: object
+          required:
+            - latitude
+            - longitude
+            - tilt
+            - bearing
+          properties:
+            latitude:
+              type: string
+              description: Target latitude
+              example: "40.7128"
+            longitude:
+              type: string
+              description: Target longitude
+              example: "-74.0060"
+            tilt:
+              type: string
+              description: Camera tilt angle
+              example: "45"
+            bearing:
+              type: string
+              description: Camera bearing
+              example: "0"
+
+    LogoConfig:
+      allOf:
+        - $ref: '#/components/schemas/RigConfig'
+        - type: object
+          required:
+            - imageKml
+          properties:
+            imageKml:
+              type: string
+              description: KML content for the logo
+              example: "<kml>...</kml>"
+
+    BalloonConfig:
+      allOf:
+        - $ref: '#/components/schemas/RigConfig'
+        - type: object
+          required:
+            - balloonKml
+          properties:
+            balloonKml:
+              type: string
+              description: KML content for the balloon
+              example: "<kml>...</kml>"
+
+paths:
+  /execute-orbit:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Execute orbit visualization
+      description: |
+        Initiates an orbital visualization around the current view in Liquid Galaxy. 
+        This creates a circular movement pattern around the current point of interest,
+        providing a 360-degree view of the location.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicSSHConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg orbit executed successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /clean-visualization:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Clean visualization resources
+      description: |
+        Cleans up all active visualizations in Liquid Galaxy. This includes removing
+        any active overlays, tours, or visual elements currently displayed on the screens.
+        Useful for resetting the display to a clean state.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicSSHConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Visualization cleaned successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /clean-logos:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Clean logo resources
+      description: |
+        Removes all logo overlays currently displayed on the Liquid Galaxy system,
+        **From left-most rig**
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RigConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Logos cleaned successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /relaunch-lg:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Relaunch Liquid Galaxy
+      description: |
+        Restarts the Liquid Galaxy application software without rebooting the system.
+        This is useful for applying software changes or recovering from application-level issues.
+        Less intensive than a full system reboot.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RigConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Relaunched successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /reboot-lg:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Reboot Liquid Galaxy
+      description: |
+        Performs a complete system reboot of all Liquid Galaxy machines.
+        This is a more comprehensive restart than relaunch-lg and should be used
+        when dealing with system-level issues or applying system updates.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RigConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Rebooted successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /stop-orbit:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Stop orbit visualization
+      description: |
+        Halts any currently active orbital visualization movement.
+        This immediately stops the circular movement pattern around the point of interest,
+        leaving the view at its current position.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicSSHConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg orbit stopped successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /clean-balloon:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Clean balloon resources
+      description: |
+        Removes all information balloons (pop-ups, Chats) **From right-most rig**
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RigConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Balloon cleaned successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /flyto:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Fly to specific coordinates
+      description: |
+        Animates the view to fly to specified geographic coordinates with custom viewing angles.
+        Allows control over the camera position (latitude/longitude), tilt, and bearing,
+        creating smooth transitions between locations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlyToConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Flyto executed successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /show-logo:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Display logo on screen
+      description: |
+        Displays a logo on the Liquid Galaxy screens using KML, **On the left-most rig**
+        The logo can be positioned and sized according to the KML specifications provided.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Logo showed successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /show-balloon:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Display balloon on screen
+      description: |
+        Shows an information balloon (pop-up) on the Liquid Galaxy screens using KML.**On right-most rig**
+        These balloons can contain text, images, and other HTML content as specified in the KML.
+        Useful for displaying location-specific information or annotations.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BalloonConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Balloon showed successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /send-kml:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Send KML file
+      description: |
+        Uploads and displays a custom KML file on the Liquid Galaxy system.
+        This endpoint allows for complex visualizations defined in KML format,
+        including placemarks, paths, polygons, and other geographic elements.
+        The KML file is associated with a project name for organization.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: KML file to upload
+                host:
+                  type: string
+                  description: SSH host address
+                sshPort:
+                  type: string
+                  description: SSH port number
+                username:
+                  type: string
+                  description: SSH username
+                password:
+                  type: string
+                  format: password
+                  description: SSH password
+                projectname:
+                  type: string
+                  description: Project name
+              required:
+                - file
+                - host
+                - sshPort
+                - username
+                - password
+                - projectname
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+              example:
+                message: "Lg Kml sent successfully"
+                statusCode: 200
+                data: ""
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
