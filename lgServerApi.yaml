@@ -43,16 +43,16 @@ components:
     BasicSSHConfig:
       type: object
       required:
-        - host
-        - sshPort
+        - ip
+        - port
         - username
         - password
       properties:
-        host:
+        ip:
           type: string
-          description: SSH host address
+          description: SSH host IP address
           example: "192.168.201.3"
-        sshPort:
+        port:
           type: string
           description: SSH port number
           example: "22"
@@ -71,9 +71,9 @@ components:
         - $ref: '#/components/schemas/BasicSSHConfig'
         - type: object
           required:
-            - numberofrigs
+            - rigs
           properties:
-            numberofrigs:
+            rigs:
               type: string
               description: Number of Liquid Galaxy rigs
               example: "3"
@@ -110,9 +110,9 @@ components:
         - $ref: '#/components/schemas/RigConfig'
         - type: object
           required:
-            - imageKml
+            - kml
           properties:
-            imageKml:
+            kml:
               type: string
               description: KML content for the logo
               example: "<kml>...</kml>"
@@ -122,9 +122,9 @@ components:
         - $ref: '#/components/schemas/RigConfig'
         - type: object
           required:
-            - balloonKml
+            - kml
           properties:
-            balloonKml:
+            kml:
               type: string
               description: KML content for the balloon
               example: "<kml>...</kml>"
@@ -465,7 +465,6 @@ paths:
         Uploads and displays a custom KML file on the Liquid Galaxy system.
         This endpoint allows for complex visualizations defined in KML format,
         including placemarks, paths, polygons, and other geographic elements.
-        The KML file is associated with a project name for organization.
       requestBody:
         required: true
         content:
@@ -476,30 +475,30 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: KML file to upload
-                host:
+                  description: file to upload (.txt)
+                ip:
                   type: string
-                  description: SSH host address
-                sshPort:
+                  description: Ip Address (eg. 192.168.201.1)
+                port:
                   type: string
-                  description: SSH port number
+                  description: port (eg. 22)
                 username:
                   type: string
-                  description: SSH username
+                  description: userName (eg. lg)
                 password:
                   type: string
                   format: password
-                  description: SSH password
-                projectname:
+                  description: password (eg. lg)
+                filename:
                   type: string
-                  description: Project name
+                  description: Name of the file (eg. test)
               required:
                 - file
-                - host
-                - sshPort
+                - ip
+                - port
                 - username
                 - password
-                - projectname
+                - filename
       responses:
         '200':
           description: Success
