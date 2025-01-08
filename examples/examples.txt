@@ -1,0 +1,24 @@
+// http://localhost:8000/api/lg-connection/clean-visualization
+
+{
+  "host": "192.168.29.239",
+  "sshPort": "2222",
+  "username": "lg",
+  "password": "lg",
+  "numberofrigs": "3",
+  "kml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><Document><name>VolTrac</name><open>1</open><description>The logo it located in the bottom left hand corner</description><Folder><name>tags</name><Style><ListStyle><listItemType>checkHideChildren</listItemType><bgColor>00ffffff</bgColor><maxSnippetLines>2</maxSnippetLines></ListStyle></Style><ScreenOverlay id=\"abc\"><name>VolTrac</name><Icon><href>https://raw.githubusercontent.com/LiquidGalaxyLAB/LG-AI-fictional-travel-itinerary-generator/refs/heads/master/Lg_ai_travel_itineary_splash.png</href></Icon><overlayXY x=\"0\" y=\"1\" xunits=\"fraction\" yunits=\"fraction\"/><screenXY x=\"0.025\" y=\"0.95\" xunits=\"fraction\" yunits=\"fraction\"/><rotationXY x=\"0\" y=\"0\" xunits=\"fraction\" yunits=\"fraction\"/><size x=\"740\" y=\"572.8\" xunits=\"pixels\" yunits=\"pixels\"/></ScreenOverlay></Folder></Document></kml>"
+}
+
+Import the curl directly
+
+curl --location 'http://localhost:8000/api/lg-connection/clean-visualization' \
+--header 'Content-Type: application/json' \
+--data '{
+  "host": "192.168.29.239",
+  "sshPort": "2222",
+  "username": "lg",
+  "password": "lg",
+  "numberofrigs": "3",
+  "kml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><Document><name>VolTrac</name><open>1</open><description>The logo it located in the bottom left hand corner</description><Folder><name>tags</name><Style><ListStyle><listItemType>checkHideChildren</listItemType><bgColor>00ffffff</bgColor><maxSnippetLines>2</maxSnippetLines></ListStyle></Style><ScreenOverlay id=\"abc\"><name>VolTrac</name><Icon><href>https://raw.githubusercontent.com/LiquidGalaxyLAB/LG-AI-fictional-travel-itinerary-generator/refs/heads/master/Lg_ai_travel_itineary_splash.png</href></Icon><overlayXY x=\"0\" y=\"1\" xunits=\"fraction\" yunits=\"fraction\"/><screenXY x=\"0.025\" y=\"0.95\" xunits=\"fraction\" yunits=\"fraction\"/><rotationXY x=\"0\" y=\"0\" xunits=\"fraction\" yunits=\"fraction\"/><size x=\"740\" y=\"572.8\" xunits=\"pixels\" yunits=\"pixels\"/></ScreenOverlay></Folder></Document></kml>"
+}
+'
