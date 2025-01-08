@@ -53,7 +53,8 @@ Checkout examples [here](https://github.com/Rohit-554/LgServerSwaggerApi/blob/ma
 ### Sending KML examples 
 http://localhost:8000/api/lg-connection/send-kml
 
-![image](https://github.com/user-attachments/assets/64adfc7f-ca7b-4e8b-967c-29c8f531d44c)
+![image](https://github.com/user-attachments/assets/9cf9f467-f2fd-4c08-a5bd-485b11b7bb01)
+
 
 ## Request Body Types
 
