@@ -1,4 +1,4 @@
-# Liquid Galaxy Control Swagger [API](https://github.com/LiquidGalaxyLAB/lg-server) Documentation 
+# Liquid Galaxy [Server](https://github.com/LiquidGalaxyLAB/lg-server) Swagger API Documentation 
 [View Documentation](https://rohit-554.github.io/LgServerSwaggerApi/)
 
 A comprehensive REST API documentation for controlling and managing Liquid Galaxy systems via SSH. This API enables developers to interact with Liquid Galaxy installations programmatically.
