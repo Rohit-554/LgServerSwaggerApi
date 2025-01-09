@@ -4,7 +4,7 @@ info:
   description: REST API for controlling and managing Liquid Galaxy systems via SSH
   version: 1.0.0
 servers:
-  - url: http://localhost:8000
+  - url: http://localhost:8000/api
     description: Development server
 
 components:
@@ -115,7 +115,7 @@ components:
             kml:
               type: string
               description: KML content for the logo
-              example: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\"><Document><name>VolTrac</name><open>1</open><description>The logo it located in the bottom left hand corner</description><Folder><name>tags</name><Style><ListStyle><listItemType>checkHideChildren</listItemType><bgColor>00ffffff</bgColor><maxSnippetLines>2</maxSnippetLines></ListStyle></Style><ScreenOverlay id=\"abc\"><name>VolTrac</name><Icon><href>https://raw.githubusercontent.com/LiquidGalaxyLAB/LG-AI-fictional-travel-itinerary-generator/refs/heads/master/Lg_ai_travel_itineary_splash.png</href></Icon><overlayXY x=\"0\" y=\"1\" xunits=\"fraction\" yunits=\"fraction\"/><screenXY x=\"0.025\" y=\"0.95\" xunits=\"fraction\" yunits=\"fraction\"/><rotationXY x=\"0\" y=\"0\" xunits=\"fraction\" yunits=\"fraction\"/><size x=\"740\" y=\"572.8\" xunits=\"pixels\" yunits=\"pixels\"/></ScreenOverlay></Folder></Document></kml>"
+              example: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><kml>...</kml>"
 
     BalloonConfig:
       allOf:
@@ -130,15 +130,38 @@ components:
               example: "<kml>...</kml>"
 
 paths:
-  /execute-orbit:
+  /lg-connection/connect-lg:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Connects to Liquid Galaxy Rigs
+      description: Establishes an SSH connection to the Liquid Galaxy system using the provided credentials.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicSSHConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /lg-connection/execute-orbit:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Execute orbit visualization
-      description: |
-        Initiates an orbital visualization around the current view in Liquid Galaxy. 
-        This creates a circular movement pattern around the current point of interest,
-        providing a 360-degree view of the location.
+      description: Initiates an orbital visualization around the current view in Liquid Galaxy.
       requestBody:
         required: true
         content:
@@ -152,10 +175,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg orbit executed successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -163,15 +182,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /clean-visualization:
+  /lg-connection/clean-visualization:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Clean visualization resources
-      description: |
-        Cleans up all active visualizations in Liquid Galaxy. This includes removing
-        any active overlays, tours, or visual elements currently displayed on the screens.
-        Useful for resetting the display to a clean state.
+      description: Cleans up all active visualizations in Liquid Galaxy.
       requestBody:
         required: true
         content:
@@ -185,10 +201,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Visualization cleaned successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -196,14 +208,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /clean-logos:
+  /lg-connection/clean-logos:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Clean logo resources
-      description: |
-        Removes all logo overlays currently displayed on the Liquid Galaxy system,
-        **From left-most rig**
+      description: Removes all logo overlays from the left-most rig
       requestBody:
         required: true
         content:
@@ -217,10 +227,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Logos cleaned successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -228,15 +234,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /relaunch-lg:
+  /lg-connection/relaunch-lg:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Relaunch Liquid Galaxy
-      description: |
-        Restarts the Liquid Galaxy application software without rebooting the system.
-        This is useful for applying software changes or recovering from application-level issues.
-        Less intensive than a full system reboot.
+      description: Restarts the Liquid Galaxy application software without rebooting the system.
       requestBody:
         required: true
         content:
@@ -250,10 +253,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Relaunched successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -261,15 +260,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /reboot-lg:
+  /lg-connection/reboot-lg:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Reboot Liquid Galaxy
-      description: |
-        Performs a complete system reboot of all Liquid Galaxy machines.
-        This is a more comprehensive restart than relaunch-lg and should be used
-        when dealing with system-level issues or applying system updates.
+      description: Performs a complete system reboot of all Liquid Galaxy machines.
       requestBody:
         required: true
         content:
@@ -283,26 +279,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Rebooted successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppError'
+  
+  /lg-connection/shutdown-lg:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Shutdown Liquid Galaxy Rigs 
+      description: Shuts down all Liquid Galaxy machines, powering off the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RigConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'              
 
-  /stop-orbit:
+  /lg-connection/stop-orbit:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Stop orbit visualization
-      description: |
-        Halts any currently active orbital visualization movement.
-        This immediately stops the circular movement pattern around the point of interest,
-        leaving the view at its current position.
+      description: Halts any currently active orbital visualization movement.
       requestBody:
         required: true
         content:
@@ -316,10 +331,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg orbit stopped successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -327,13 +338,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /clean-balloon:
+  /lg-connection/clean-balloon:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Clean balloon resources
-      description: |
-        Removes all information balloons (pop-ups, Chats) **From right-most rig**
+      description: Removes all information balloons from the right-most rig
       requestBody:
         required: true
         content:
@@ -347,10 +357,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Balloon cleaned successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -358,15 +364,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /flyto:
+  /lg-connection/flyto:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Fly to specific coordinates
-      description: |
-        Animates the view to fly to specified geographic coordinates with custom viewing angles.
-        Allows control over the camera position (latitude/longitude), tilt, and bearing,
-        creating smooth transitions between locations.
+      description: Animates the view to fly to specified geographic coordinates with custom viewing angles.
       requestBody:
         required: true
         content:
@@ -380,10 +383,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Flyto executed successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -391,14 +390,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /show-logo:
+  /lg-connection/show-logo:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Display logo on screen
-      description: |
-        Displays a logo on the Liquid Galaxy screens using KML, **On the left-most rig**
-        The logo can be positioned and sized according to the KML specifications provided.
+      description: Displays a logo on the left-most rig using KML
       requestBody:
         required: true
         content:
@@ -412,10 +409,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Logo showed successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -423,15 +416,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /show-balloon:
+  /lg-connection/show-balloon:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Display balloon on screen
-      description: |
-        Shows an information balloon (pop-up) on the Liquid Galaxy screens using KML.**On right-most rig**
-        These balloons can contain text, images, and other HTML content as specified in the KML.
-        Useful for displaying location-specific information or annotations.
+      description: Shows an information balloon on the right-most rig using KML
       requestBody:
         required: true
         content:
@@ -445,10 +435,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Balloon showed successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
@@ -456,15 +442,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /send-kml:
+  /lg-connection/send-kml:
     post:
       tags:
         - Liquid Galaxy Controls
       summary: Send KML file
-      description: |
-        Uploads and displays a custom KML file on the Liquid Galaxy system.
-        This endpoint allows for complex visualizations defined in KML format,
-        including placemarks, paths, polygons, and other geographic elements.
+      description: Uploads and displays a custom KML file on the Liquid Galaxy system.
       requestBody:
         required: true
         content:
@@ -506,10 +489,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppSuccess'
-              example:
-                message: "Lg Kml sent successfully"
-                statusCode: 200
-                data: ""
         '400':
           description: Error
           content:
