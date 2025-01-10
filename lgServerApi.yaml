@@ -86,6 +86,7 @@ components:
             - latitude
             - longitude
             - tilt
+            - elevation
             - bearing
           properties:
             latitude:
@@ -96,6 +97,10 @@ components:
               type: string
               description: Target longitude
               example: "-74.0060"
+            elevation:
+              type: string
+              description: Camera elevation with LG zoom
+              example: "12"  
             tilt:
               type: string
               description: Camera tilt angle
