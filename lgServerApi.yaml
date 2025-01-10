@@ -135,6 +135,32 @@ components:
               example: "<kml>...</kml>"
 
 paths:
+  /lg-connection/check-connection:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Check connection status
+      description: Establishes an SSH connection to the Liquid Galaxy system using the provided credentials.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicSSHConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
   /lg-connection/connect-lg:
     post:
       tags:
