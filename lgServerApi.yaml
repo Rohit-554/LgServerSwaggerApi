@@ -71,11 +71,11 @@ components:
         - $ref: '#/components/schemas/BasicSSHConfig'
         - type: object
           required:
-            - rigs
+            - screens
           properties:
-            rigs:
+            screens:
               type: string
-              description: Number of Liquid Galaxy rigs
+              description: Number of Liquid Galaxy screens
               example: "3"
     
     FlyToConfig:
@@ -165,7 +165,7 @@ paths:
     post:
       tags:
         - Liquid Galaxy Controls
-      summary: Connects to Liquid Galaxy Rigs
+      summary: Connects to Liquid Galaxy screens
       description: Establishes an SSH connection to the Liquid Galaxy system using the provided credentials.
       requestBody:
         required: true
@@ -244,7 +244,7 @@ paths:
       tags:
         - Liquid Galaxy Controls
       summary: Clean logo resources
-      description: Removes all logo overlays from the left-most rig
+      description: Removes all logo overlays from the left-most screen
       requestBody:
         required: true
         content:
@@ -321,7 +321,7 @@ paths:
     post:
       tags:
         - Liquid Galaxy Controls
-      summary: Shutdown Liquid Galaxy Rigs 
+      summary: Shutdown Liquid Galaxy screens 
       description: Shuts down all Liquid Galaxy machines, powering off the system.
       requestBody:
         required: true
@@ -374,7 +374,7 @@ paths:
       tags:
         - Liquid Galaxy Controls
       summary: Clean balloon resources
-      description: Removes all information balloons from the right-most rig
+      description: Removes all information balloons from the right-most screen
       requestBody:
         required: true
         content:
@@ -426,7 +426,7 @@ paths:
       tags:
         - Liquid Galaxy Controls
       summary: Display logo on screen
-      description: Displays a logo on the left-most rig using KML
+      description: Displays a logo on the left-most screen using KML
       requestBody:
         required: true
         content:
@@ -452,7 +452,7 @@ paths:
       tags:
         - Liquid Galaxy Controls
       summary: Display balloon on screen
-      description: Shows an information balloon on the right-most rig using KML
+      description: Shows an information balloon on the right-most screen using KML
       requestBody:
         required: true
         content:
