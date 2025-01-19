@@ -66,7 +66,7 @@ components:
           format: password
           example: "lg"
     
-    RigConfig:
+    ScreenConfig:
       allOf:
         - $ref: '#/components/schemas/BasicSSHConfig'
         - type: object
@@ -80,7 +80,7 @@ components:
     
     FlyToConfig:
       allOf:
-        - $ref: '#/components/schemas/RigConfig'
+        - $ref: '#/components/schemas/ScreenConfig'
         - type: object
           required:
             - latitude
@@ -112,7 +112,7 @@ components:
 
     LogoConfig:
       allOf:
-        - $ref: '#/components/schemas/RigConfig'
+        - $ref: '#/components/schemas/ScreenConfig'
         - type: object
           required:
             - kml
@@ -124,7 +124,7 @@ components:
 
     BalloonConfig:
       allOf:
-        - $ref: '#/components/schemas/RigConfig'
+        - $ref: '#/components/schemas/ScreenConfig'
         - type: object
           required:
             - kml
@@ -250,7 +250,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RigConfig'
+              $ref: '#/components/schemas/ScreenConfig'
       responses:
         '200':
           description: Success
@@ -276,7 +276,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RigConfig'
+              $ref: '#/components/schemas/ScreenConfig'
       responses:
         '200':
           description: Success
@@ -302,7 +302,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RigConfig'
+              $ref: '#/components/schemas/ScreenConfig'
       responses:
         '200':
           description: Success
@@ -328,7 +328,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RigConfig'
+              $ref: '#/components/schemas/ScreenConfig'
       responses:
         '200':
           description: Success
@@ -380,7 +380,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RigConfig'
+              $ref: '#/components/schemas/ScreenConfig'
       responses:
         '200':
           description: Success
