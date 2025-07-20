@@ -1,6 +1,6 @@
 # Liquid Galaxy [Server](https://github.com/LiquidGalaxyLAB/lg-server) Swagger API Documentation
 
-[View Documentation](https://rohit-554.github.io/LgServerSwaggerApi/)
+[View Documentation](https://liquidgalaxylab.github.io/LgServerSwaggerApi/)
 
 A comprehensive REST API documentation for controlling and managing Liquid Galaxy systems via SSH. This API enables developers to interact with Liquid Galaxy installations programmatically.
 
@@ -56,7 +56,7 @@ All endpoints require SSH configuration parameters:
 
 ## Examples
 
-Checkout examples [here](https://github.com/Rohit-554/LgServerSwaggerApi/blob/master/examples/examples.txt)
+Checkout examples [here](https://liquidgalaxylab.github.io/LgServerSwaggerApi/blob/master/examples/examples.txt)
 
 ### Sending KML examples
 <http://localhost:8000/api/lg-connection/send-kml>
@@ -194,7 +194,7 @@ curl -X POST http://localhost:8000/show-logo \
 1. Clone the repository
 2. Install dependencies
 3. Start local server
-4. Access Swagger documentation [here](https://rohit-554.github.io/LgServerSwaggerApi/)
+4. Access Swagger documentation [here](https://liquidgalaxylab.github.io/LgServerSwaggerApi/)
 
 ## API Security Considerations
 
@@ -209,4 +209,4 @@ For issues and feature requests, please create an issue in the repository.
 
 ## License
 
-[Add License Information](https://github.com/Rohit-554/LgServerSwaggerApi/blob/master/LICENSE)
+[Add License Information](https://liquidgalaxylab.github.io/LgServerSwaggerApi/blob/master/LICENSE)
