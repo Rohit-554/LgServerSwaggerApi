@@ -56,7 +56,7 @@ All endpoints require SSH configuration parameters:
 
 ## Examples
 
-Checkout examples [here](https://liquidgalaxylab.github.io/LgServerSwaggerApi/blob/master/examples/examples.txt)
+Checkout examples [here](https://liquidgalaxylab.github.io/LgServerSwaggerApi/examples/examples.txt)
 
 ### Sending KML examples
 <http://localhost:8000/api/lg-connection/send-kml>
@@ -209,4 +209,4 @@ For issues and feature requests, please create an issue in the repository.
 
 ## License
 
-[Add License Information](https://liquidgalaxylab.github.io/LgServerSwaggerApi/blob/master/LICENSE)
+[Add License Information](https://github.com/LiquidGalaxyLAB/LgServerSwaggerApi/blob/master/LICENSE)
