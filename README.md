@@ -1,17 +1,20 @@
-# Liquid Galaxy [Server](https://github.com/LiquidGalaxyLAB/lg-server) Swagger API Documentation 
-[View Documentation](https://rohit-554.github.io/LgServerSwaggerApi/)
+# Liquid Galaxy [Server](https://github.com/LiquidGalaxyLAB/lg-server) Swagger API Documentation
+
+[View Documentation](https://liquidgalaxylab.github.io/LgServerSwaggerApi/)
 
 A comprehensive REST API documentation for controlling and managing Liquid Galaxy systems via SSH. This API enables developers to interact with Liquid Galaxy installations programmatically.
 
 ## Overview
 
 The Liquid Galaxy Control API provides endpoints for:
+
 - Managing system operations (reboot, relaunch)
 - Controlling visualizations and camera movements
 - Displaying custom content (logos, balloons)
 - Managing KML file deployments
 
 ## Base URL
+
 ```
 http://localhost:8000
 ```
@@ -19,6 +22,7 @@ http://localhost:8000
 ## Authentication
 
 All endpoints require SSH configuration parameters:
+
 ```json
 {
   "ip": "192.168.201.3",
@@ -31,34 +35,38 @@ All endpoints require SSH configuration parameters:
 ## Available Endpoints
 
 ### System Management
+
 - **POST /reboot-lg**: Full system reboot
 - **POST /relaunch-lg**: Restart LG software
 - **POST /clean-visualization**: Reset all visualizations
 
 ### Navigation & Movement
-- **POST /execute-orbit**: Start orbital movement
+
+- **POST /start-orbit**: Start orbital movement
 - **POST /stop-orbit**: Stop orbital movement
 - **POST /flyto**: Navigate to specific coordinates
 
 ### Content Display
+
 - **POST /show-logo**: Display logo (left-most rig)
 - **POST /clean-logos**: Remove logos
 - **POST /show-balloon**: Show information balloon (right-most rig)
 - **POST /clean-balloon**: Remove balloons
 - **POST /send-kml**: Upload and display KML file
 
-## Examples 
-Checkout examples [here](https://github.com/Rohit-554/LgServerSwaggerApi/blob/master/examples/examples.txt)
+## Examples
 
-### Sending KML examples 
-http://localhost:8000/api/lg-connection/send-kml
+Checkout examples [here](https://liquidgalaxylab.github.io/LgServerSwaggerApi/examples/examples.txt)
+
+### Sending KML examples
+<http://localhost:8000/api/lg-connection/send-kml>
 
 ![image](https://github.com/user-attachments/assets/9cf9f467-f2fd-4c08-a5bd-485b11b7bb01)
-
 
 ## Request Body Types
 
 ### BasicSSHConfig
+
 ```json
 {
   "ip": "192.168.201.3",
@@ -69,7 +77,9 @@ http://localhost:8000/api/lg-connection/send-kml
 ```
 
 ### RigConfig
+
 Extends BasicSSHConfig with:
+
 ```json
 {
   "rigs": "3"  // Number of Liquid Galaxy 
@@ -77,7 +87,9 @@ Extends BasicSSHConfig with:
 ```
 
 ### FlyToConfig
+
 Extends RigConfig with navigation parameters:
+
 ```json
 {
   "latitude": "40.7128",
@@ -88,7 +100,9 @@ Extends RigConfig with navigation parameters:
 ```
 
 ### LogoConfig & BalloonConfig
+
 Extends RigConfig with:
+
 ```json
 {
   "kml": "<kml>...</kml>"  // KML content for display
@@ -98,6 +112,7 @@ Extends RigConfig with:
 ## Response Formats
 
 ### Success Response
+
 ```json
 {
   "message": "Operation completed successfully",
@@ -107,6 +122,7 @@ Extends RigConfig with:
 ```
 
 ### Error Response
+
 ```json
 {
   "message": "Error description",
@@ -133,6 +149,7 @@ Extends RigConfig with:
 ## Example Usage
 
 ### Flying to a Location
+
 ```bash
 curl -X POST http://localhost:8000/flyto \
 -H "Content-Type: application/json" \
@@ -150,6 +167,7 @@ curl -X POST http://localhost:8000/flyto \
 ```
 
 ### Displaying a Logo
+
 ```bash
 curl -X POST http://localhost:8000/show-logo \
 -H "Content-Type: application/json" \
@@ -176,7 +194,7 @@ curl -X POST http://localhost:8000/show-logo \
 1. Clone the repository
 2. Install dependencies
 3. Start local server
-4. Access Swagger documentation [here](https://rohit-554.github.io/LgServerSwaggerApi/)
+4. Access Swagger documentation [here](https://liquidgalaxylab.github.io/LgServerSwaggerApi/)
 
 ## API Security Considerations
 
@@ -191,4 +209,4 @@ For issues and feature requests, please create an issue in the repository.
 
 ## License
 
-[Add License Information](https://github.com/Rohit-554/LgServerSwaggerApi/blob/master/LICENSE)
+[Add License Information](https://github.com/LiquidGalaxyLAB/LgServerSwaggerApi/blob/master/LICENSE)

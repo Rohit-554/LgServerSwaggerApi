@@ -187,18 +187,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/AppError'
 
-  /lg-connection/execute-orbit:
+  /lg-connection/build-orbit:
     post:
       tags:
         - Liquid Galaxy Controls
-      summary: Execute orbit visualization
-      description: Initiates an orbital visualization around the current view in Liquid Galaxy.
+      summary: Build orbit visualization
+      description: Build an orbital visualization around the given view in Liquid Galaxy.
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/FlyToConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /lg-connection/start-orbit:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Start orbit visualization
+      description: Initiates an orbital visualization around the given view in Liquid Galaxy.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicSSHConfig'
       responses:
         '200':
           description: Success
@@ -349,6 +375,32 @@ paths:
         - Liquid Galaxy Controls
       summary: Stop orbit visualization
       description: Halts any currently active orbital visualization movement.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicSSHConfig'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppSuccess'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /lg-connection/clean-orbit:
+    post:
+      tags:
+        - Liquid Galaxy Controls
+      summary: Clean orbit visualization
+      description: Cleans any currently active orbital visualization build.
       requestBody:
         required: true
         content:
